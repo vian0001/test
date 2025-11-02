@@ -1,1 +1,1495 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menyeting Gateway dan Default Route di MikroTik</title>
+    <style>
 
+/* Styling untuk container gambar */
+
+.image-container {
+  margin: 30px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+  max-width: 100%;
+  position: relative;
+}
+
+.image-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: all 0.4s ease;
+}
+
+.image-container:hover img {
+  filter: brightness(1.1);
+}
+
+.image-caption {
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7), transparent);
+  padding: 15px 20px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.image-container:hover .image-caption {
+  transform: translateY(0);
+}
+
+@keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
+@keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+
+
+    /* Portfolio Button Styling */
+
+.portfolio-button {
+position: fixed;
+bottom: 30px;
+right: 30px;
+z-index: 1000;
+background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+color: var(--text-primary);
+border: none;
+border-radius: 50px;
+padding: 15px 25px;
+font-family: 'Inter', sans-serif;
+font-weight: 600;
+font-size: 1rem;
+cursor: pointer;
+box-shadow: 0 5px 20px rgba(37, 99, 235, 0.4);
+transition: all 0.3s ease;
+display: flex;
+align-items: center;
+gap: 10px;
+overflow: hidden;
+text-decoration: none;
+}
+.portfolio-button:hover {
+transform: translateY(-5px) scale(1.05);
+box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+}
+.portfolio-button::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg,
+transparent,
+rgba(255, 255, 255, 0.2),
+transparent);
+animation: shineEffect 3s infinite;
+}
+.portfolio-icon {
+font-size: 1.2rem;
+animation: pulse 2s infinite;
+}
+@keyframes shineEffect {
+0% { left: -100%; }
+20% { left: 100%; }
+100% { left: 100%; }
+}
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.2); }
+100% { transform: scale(1); }
+}
+.attention-ripple {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 100%;
+height: 100%;
+border-radius: 50px;
+border: 2px solid var(--accent-color);
+animation: ripple 2s infinite;
+opacity: 0;
+}
+@keyframes ripple {
+0% {
+width: 100%;
+height: 100%;
+opacity: 0.8;
+}
+100% {
+width: 200%;
+height: 200%;
+opacity: 0;
+}
+}
+{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --accent-color: #06b6d4;
+    --success-color: #059669;
+    --warning-color: #d97706;
+    --danger-color: #dc2626;
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #334155;
+    --bg-light: #f8fafc;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border-color: #475569;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Tech Background Pattern */
+.tech-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(220, 38, 38, 0.08) 0%, transparent 50%);
+}
+
+.circuit-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    opacity: 0.03;
+    background-image: 
+        linear-gradient(90deg, var(--primary-color) 1px, transparent 1px),
+        linear-gradient(var(--primary-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: circuitMove 20s linear infinite;
+}
+
+@keyframes circuitMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* Floating particles */
+.tech-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float linear infinite;
+}
+
+@keyframes float {
+    0% { 
+        transform: translateY(100vh) translateX(0px);
+        opacity: 0;
+    }
+    10% { 
+        opacity: 0.6;
+    }
+    90% { 
+        opacity: 0.6;
+    }
+    100% { 
+        transform: translateY(-100px) translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 100px 20px 80px;
+    background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1) 0%, 
+        rgba(6, 182, 212, 0.1) 50%, 
+        rgba(5, 150, 105, 0.1) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(37, 99, 235, 0.1),
+        transparent
+    );
+    animation: headerScan 10s linear infinite;
+}
+
+@keyframes headerScan {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.main-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color), var(--success-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    text-shadow: 0 0 50px rgba(37, 99, 235, 0.3);
+    animation: titleGlow 4s ease-in-out infinite alternate;
+    position: relative;
+}
+
+@keyframes titleGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.2); }
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.author-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: cardFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes cardFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-10px); }
+}
+
+.card-header {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.author-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    text-align: left;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 80px;
+    margin-right: 15px;
+}
+
+.info-value {
+    color: var(--text-primary);
+    font-weight: 400;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+/* Section styling */
+.section {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 40px 0;
+    position: relative;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+    animation: sectionSlide 0.8s ease-out;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.section:nth-child(even) {
+    animation: sectionSlideRight 0.8s ease-out;
+}
+
+@keyframes sectionSlide {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes sectionSlideRight {
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.section:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 12px 48px rgba(37, 99, 235, 0.2);
+    transform: translateY(-8px);
+}
+
+.section-title {
+    font-family: 'Inter', sans-serif;
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 30px;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+}
+
+/* Sub-section titles */
+.subsection-title {
+    font-family: 'Inter', sans-serif;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.subsection-title::before {
+    content: '—'; /* Simple dash or similar indicator */
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+}
+
+/* Code blocks with typing effect */
+.code-terminal {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 25px 0;
+    font-family: 'JetBrains Mono', monospace;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.code-terminal::before {
+    content: '$ mikrotik@router:~';
+    color: var(--success-color);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.code-line {
+    color: var(--text-primary);
+    margin: 8px 0;
+    position: relative;
+    padding-left: 20px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    width: fit-content;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: pre;
+}
+
+.code-line.typing {
+    opacity: 1;
+    border-right: 2px solid var(--accent-color);
+    animation: blink-cursor 1s infinite;
+}
+
+.code-line.typed {
+    opacity: 1;
+    border-right: none;
+}
+
+@keyframes blink-cursor {
+    0%, 50% { border-color: var(--accent-color); }
+    51%, 100% { border-color: transparent; }
+}
+
+.code-line:hover {
+    background: rgba(37, 99, 235, 0.1);
+    padding-left: 25px;
+    border-radius: 6px;
+}
+
+.code-line::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-size: 0.8rem;
+}
+
+.comment {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.string {
+    color: var(--warning-color);
+    font-weight: 400;
+}
+
+.keyword {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Alert boxes */
+.tech-alert {
+    background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1), 
+        rgba(6, 182, 212, 0.1));
+    border: 1px solid var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    position: relative;
+    animation: alertPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes alertPulse {
+    0% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
+    100% { box-shadow: 0 0 30px rgba(37, 99, 235, 0.4); }
+}
+
+.tech-alert::before {
+    content: '🔧 TEKNOLOGI INFO';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--bg-primary);
+    color: var(--primary-color);
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 1px solid var(--primary-color);
+}
+
+.security-alert {
+    background: linear-gradient(135deg, 
+        rgba(220, 38, 38, 0.1), 
+        rgba(217, 119, 6, 0.1));
+    border: 1px solid var(--danger-color);
+    border-left: 4px solid var(--danger-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    position: relative;
+    animation: securityBlink 2s ease-in-out infinite alternate;
+}
+
+@keyframes securityBlink {
+    0% { border-left-color: var(--danger-color); }
+    100% { border-left-color: var(--warning-color); }
+}
+
+.security-alert::before {
+    content: '🛡 KEAMANAN';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--bg-primary);
+    color: var(--danger-color);
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 1px solid var(--danger-color);
+}
+
+.conclusion-box {
+    background: linear-gradient(135deg, 
+        rgba(5, 150, 105, 0.1), 
+        rgba(37, 99, 235, 0.1));
+    border: 1px solid var(--success-color);
+    border-left: 4px solid var(--success-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 30px 0;
+    position: relative;
+    animation: conclusionGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes conclusionGlow {
+    0% { box-shadow: 0 0 20px rgba(5, 150, 105, 0.2); }
+    100% { box-shadow: 0 0 30px rgba(5, 150, 105, 0.4); }
+}
+
+.conclusion-box::before {
+    content: '📝 KESIMPULAN';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--bg-primary);
+    color: var(--success-color);
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 1px solid var(--success-color);
+}
+
+/* Bibliography */
+.bibliography {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.08), 
+        rgba(255, 255, 255, 0.04));
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 60px;
+    backdrop-filter: blur(20px);
+    animation: biblioFade 1.5s ease-out;
+}
+
+@keyframes biblioFade {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.bibliography h3 {
+    color: var(--accent-color);
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.bibliography ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.bibliography li {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    position: relative;
+    padding-left: 50px;
+}
+
+.bibliography li::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    font-size: 1.2rem;
+}
+
+.bibliography li:hover {
+    color: var(--text-primary);
+    transform: translateX(10px);
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(6, 182, 212, 0.05));
+}
+
+.bibliography a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    word-break: break-all;
+}
+
+.bibliography a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* Progress bar */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--success-color));
+    z-index: 1000;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    
+    .section {
+        padding: 25px 20px;
+        margin: 30px 0;
+    }
+    
+    .container {
+        padding: 40px 15px;
+    }
+
+    .code-terminal {
+        padding: 20px;
+        font-size: 0.9rem;
+    }
+
+    .author-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Smooth animations */
+.fade-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    /* Anti-Copy CSS */
+
+
+* {
+-webkit-user-select: none;
+-webkit-touch-callout: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+img, a {
+-webkit-user-drag: none;
+-khtml-user-drag: none;
+-moz-user-drag: none;
+-o-user-drag: none;
+user-drag: none;
+}
+
+</style>
+
+<!-- Portfolio Button -->
+<a href="https://jovian-portofolio02.vercel.app/" target="_blank" class="portfolio-button">
+    <span class="portfolio-icon">🚀</span>
+    Lihat Portfolio Saya
+    <div class="attention-ripple"></div>
+</a>
+
+<!-- Tech Background -->
+<div class="tech-bg"></div>
+<div class="circuit-pattern"></div>
+<div class="tech-particles" id="techParticles"></div>
+
+<!-- Header -->
+<div class="header">
+    <h1 class="main-title">MIKROTIK ROUTEROS</h1>
+    <div class="subtitle">Membuat Filter Rules (Input, Output, Forward) pada Firewall MikroTik</div>
+    <div class="subtitle">Konfigurasi aturan firewall untuk keamanan jaringan optimal</div>
+    
+    <div class="author-card">
+        <div class="card-header">Informasi Penulis</div>
+        <div class="author-info">
+            <div class="info-item">
+                <span class="info-label">Penulis:</span>
+                <span class="info-value">Jovian Ekasakta</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Guru:</span>
+                <span class="info-value">Arief Wahyudin</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Kelas:</span>
+                <span class="info-value">XI TJKT 03</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Sekolah:</span>
+                <span class="info-value">Dwija Bhakti 01 Jombang</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div class="section fade-in">
+            <h2 class="section-title"># topologi yang digunakan</h2>
+
+
+
+                                                <div class="image-container">
+          <img src="topologi.png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+
+        </div>
+
+
+<div class="container">
+<!-- Konsep Dasar Firewall MikroTik Section -->
+<div class="section fade-in">
+    <h2 class="section-title">KONSEP DASAR FIREWALL MIKROTIK</h2>
+    
+    <p>Dari sumber MikroTik Documentation (2024), firewall pada MikroTik mengimplementasikan packet filtering yang menyediakan fungsi keamanan untuk mengelola aliran data ke, dari, dan melalui router. Bersama dengan Network Address Translation, firewall berfungsi sebagai alat untuk mencegah akses tidak sah ke jaringan yang langsung terhubung dan router itu sendiri, serta sebagai filter untuk lalu lintas keluar.</p>
+    
+    <p>Dari sumber NetworkTik (2024), MikroTik Firewall memiliki berbagai fitur seperti filter rules, NAT translation, packet marking, service port helpers, dan banyak lagi untuk melindungi jaringan Anda. Seluruh komponen ini bekerja bersama untuk membentuk sistem keamanan yang komprehensif.</p>
+    
+    <div class="tech-alert">
+        <p>Firewall MikroTik memiliki tiga chain utama yang masing-masing memiliki fungsi spesifik dalam pemfilteran paket data. Ketiga chain ini bekerja secara hirarkis dan memiliki peran penting dalam melindungi router dan jaringan yang terhubung.</p>
+    </div>
+    
+    <h3 class="subsection-title">Pengertian Chain pada Firewall MikroTik</h3>
+    
+    <p>Dari sumber MikroTik Wiki (2024), terdapat tiga chain yang telah didefinisikan sebelumnya dan tidak dapat dihapus: input - digunakan untuk memproses paket yang memasuki router melalui salah satu interface dengan alamat IP tujuan yang merupakan salah satu alamat router.</p>
+    
+    <p>Dari sumber Forum MikroTik (2023), penjelasan singkat tentang berbagai chain adalah sebagai berikut:</p>
+    <ul>
+        <li>input adalah untuk lalu lintas menuju router sebagai tujuan akhir
+        forward adalah untuk lalu lintas yang masuk dan juga keluar dari router menuju tujuan akhir
+        output adalah lalu lintas yang berasal dari router itu sendiri.</li>
+    </ul>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">Chain INPUT</span> - Traffic yang ditujukan ke router MikroTik</div>
+        <div class="code-line comment"># Contoh: Koneksi Winbox, SSH, Web Admin, Ping ke router</div>
+        <div class="code-line"><span class="keyword">Chain FORWARD</span> - Traffic yang melewati router menuju tujuan lain</div>
+        <div class="code-line comment"># Contoh: Lalu lintas dari LAN ke Internet atau antar jaringan</div>
+        <div class="code-line"><span class="keyword">Chain OUTPUT</span> - Traffic yang berasal dari router MikroTik</div>
+        <div class="code-line comment"># Contoh: DNS query yang dilakukan router, NTP update</div>
+    </div>
+    
+    <p>Dari sumber VRealmatic (2023), chain input menangani lalu lintas masuk ke router (layanan router dan antarmuka) - misalnya, upaya login melalui SSH atau Winbox. Di sini, Anda dapat menentukan aturan untuk memblokir akses tidak sah atau untuk mengizinkan lalu lintas hanya dari sumber terpercaya.</p>
+    
+    <p>Dari sumber yang sama, chain forward menangani lalu lintas yang melewati router, tidak ditujukan untuk router itu sendiri. Ini adalah lalu lintas antara jaringan yang berbeda, misalnya, antara jaringan internal dan internet.</p>
+    
+    <p>Selanjutnya, chain output mengontrol lalu lintas keluar dari router - mengontrol lalu lintas yang dihasilkan oleh router dan menuju keluar darinya. Ini mencakup paket yang dikirim dari router ke perangkat atau jaringan lain.</p>
+    
+    <div class="security-alert">
+        <p>Perlu diperhatikan bahwa urutan pemrosesan aturan firewall sangat penting. Paket data akan diproses berdasarkan urutan aturan dari atas ke bawah. Ketika sebuah paket cocok dengan kriteria suatu aturan, tindakan yang ditentukan akan dilakukan dan aturan selanjutnya tidak akan diproses (kecuali untuk tindakan passthrough).</p>
+    </div>
+    
+    <div class="conclusion-box">
+        <p>Dari 2 pendapat tersebut dapat disimpulkan bahwa firewall MikroTik memiliki tiga chain utama (input, forward, dan output) yang masing-masing berfungsi untuk menangani lalu lintas data yang berbeda. Chain input menangani paket yang ditujukan ke router, chain forward menangani paket yang melewati router, dan chain output menangani paket yang berasal dari router. Pemahaman tentang ketiga chain ini sangat penting untuk membangun konfigurasi firewall yang efektif dan aman.</p>
+    </div>
+</div>
+
+<!-- Input Chain Rules Section -->
+<div class="section fade-in">
+    <h2 class="section-title">1. INPUT CHAIN RULES</h2>
+
+                                                    <div class="image-container">
+          <img src="topologi.png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+
+
+                                                    <div class="image-container">
+          <img src="no (1).png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+    
+    <h3 class="subsection-title">Pengertian dan Fungsi Input Chain</h3>
+    
+    <p>Dari sumber MikroTik Documentation (2024), input chain digunakan untuk memproses paket yang memasuki router melalui salah satu interface dengan alamat IP tujuan yang merupakan salah satu alamat router. Chain ini menjadi garis pertahanan pertama untuk router MikroTik Anda.</p>
+    
+    <p>Dari sumber NetworkTik (2024), Chain Input berarti lalu lintas yang ditujukan dan berakhir di router MikroTik itu sendiri. Contohnya ketika Anda membuka sesi Winbox ke router MikroTik, itu termasuk chain input karena lalu lintas menuju ke router itu sendiri. Begitu juga jika Anda melakukan SSH ke router, atau ping ke router. Semua ini termasuk dalam chain input.</p>
+    
+    <div class="tech-alert">
+        <p>Input chain mengontrol akses ke router itu sendiri, termasuk layanan manajemen seperti Winbox, SSH, dan WebFig. Mengamankan chain ini sangat krusial karena berhubungan langsung dengan keamanan perangkat router Anda.</p>
+    </div>
+    
+    <h3 class="subsection-title">Membuat Aturan Input Chain Dasar</h3>
+    
+    <p>Dari sumber MikroTik Troubleshooting Guide (2024), aturan dasar yang penting untuk ditambahkan di input chain adalah menerima koneksi yang sudah established dan related:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> comment=<span class="string">"default configuration"</span> connection-state=<span class="string">established,related</span></div>
+        <div class="code-line comment"># Menerima paket dari koneksi yang sudah dibuat sebelumnya</div>
+    </div>
+    
+    <p>Dari sumber ShellHacks (2023), salah satu aturan default yang penting adalah memeriksa paket yang masuk ke router apakah mereka merupakan bagian dari koneksi ESTABLISHED, RELATED, atau telah ditandai sebagai UNTRACKED:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> comment=<span class="string">"accept established,related,untracked"</span> connection-state=<span class="string">established,related,untracked</span></div>
+        <div class="code-line comment"># Menerima koneksi yang sudah dibuat dan terkait</div>
+    </div>
+    
+    <p>Selanjutnya, penting untuk menambahkan aturan untuk ICMP (ping) agar router dapat dideteksi dalam jaringan:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> protocol=<span class="string">icmp</span></div>
+        <div class="code-line comment"># Mengizinkan ping ke router</div>
+    </div>
+    
+    <p>Aturan untuk mengizinkan akses dari jaringan lokal (misalnya untuk manajemen):</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall address-list add</span> address=<span class="string">192.168.88.0/24</span> list=<span class="string">allowed_to_router</span></div>
+        <div class="code-line comment"># Membuat daftar alamat yang diizinkan</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> src-address-list=<span class="string">allowed_to_router</span></div>
+        <div class="code-line comment"># Mengizinkan akses dari jaringan lokal</div>
+    </div>
+    
+    <p>Dan akhirnya, menambahkan aturan untuk menolak semua akses lainnya:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">input</span></div>
+        <div class="code-line comment"># Menolak semua akses yang tidak diizinkan sebelumnya</div>
+    </div>
+    
+    <h3 class="subsection-title">Contoh Konfigurasi Input Chain Lengkap</h3>
+    
+    <p>Berikut adalah contoh konfigurasi input chain yang lebih lengkap:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Menerima koneksi yang sudah established dan related</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> connection-state=<span class="string">established,related,untracked</span></div>
+        <div class="code-line comment"># Menolak koneksi invalid</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">input</span> connection-state=<span class="string">invalid</span></div>
+        <div class="code-line comment"># Mengizinkan ICMP (ping)</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> protocol=<span class="string">icmp</span></div>
+        <div class="code-line comment"># Mengizinkan akses SSH dari jaringan lokal</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> protocol=<span class="string">tcp</span> dst-port=<span class="string">22</span> src-address=<span class="string">192.168.88.0/24</span></div>
+        <div class="code-line comment"># Mengizinkan akses Winbox dari jaringan lokal</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> protocol=<span class="string">tcp</span> dst-port=<span class="string">8291</span> src-address=<span class="string">192.168.88.0/24</span></div>
+        <div class="code-line comment"># Mengizinkan akses WebFig dari jaringan lokal</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> protocol=<span class="string">tcp</span> dst-port=<span class="string">80</span> src-address=<span class="string">192.168.88.0/24</span></div>
+        <div class="code-line comment"># Menolak semua akses lainnya</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">input</span></div>
+    </div>
+    
+    <div class="security-alert">
+        <p>Pastikan Anda tidak mengunci diri sendiri dari akses router saat mengonfigurasi input chain. Selalu periksa kembali aturan yang diterapkan dan pastikan ada jalur akses aman dari jaringan lokal Anda. Jika Anda tidak yakin, gunakan fitur timeout pada aturan pertama kali Anda menerapkannya.</p>
+    </div>
+    
+    <h3 class="subsection-title">Verifikasi Aturan Input Chain</h3>
+    
+    <p>Untuk memeriksa aturan input chain yang telah dikonfigurasi:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter print</span> where chain=<span class="string">input</span></div>
+        <div class="code-line comment"># Menampilkan semua aturan di input chain</div>
+    </div>
+    
+    <p>Untuk melihat statistik aturan:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter print stats</span> where chain=<span class="string">input</span></div>
+        <div class="code-line comment"># Menampilkan statistik aturan di input chain</div>
+        <div class="code-line">Flags: X - disabled, I - invalid, D - dynamic</div>
+        <div class="code-line"> #   CHAIN   ACTION     BYTES           PACKETS</div>
+        <div class="code-line"> 0   input   accept     2356786         18453</div>
+        <div class="code-line"> 1   input   drop       125943          2434</div>
+        <div class="code-line"> 2   input   accept     634926          7648</div>
+        <div class="code-line"> 3   input   drop       4288079         83428</div>
+    </div>
+    
+    <div class="conclusion-box">
+        <p>Dari 2 pendapat tersebut dapat disimpulkan bahwa input chain adalah komponen krusial dalam keamanan router MikroTik karena melindungi akses langsung ke router. Konfigurasi input chain yang tepat mencakup menerima koneksi established dan related, mengizinkan protokol seperti ICMP secara terbatas, mengizinkan akses manajemen hanya dari jaringan lokal yang terpercaya, dan menolak semua lalu lintas lainnya. Penting untuk menerapkan prinsip "least privilege" dalam mengonfigurasi input chain agar tidak ada celah keamanan yang terbuka.</p>
+    </div>
+</div>
+
+<!-- Forward Chain Rules Section -->
+<div class="section fade-in">
+    <h2 class="section-title">2. FORWARD CHAIN RULES</h2>
+
+                                                    <div class="image-container">
+          <img src="topologi.png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+
+
+                                                    <div class="image-container">
+          <img src="no (2).png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+    
+    <h3 class="subsection-title">Pengertian dan Fungsi Forward Chain</h3>
+    
+    <p>Dari sumber MikroTik Wiki (2024), forward chain digunakan untuk memproses paket yang melewati router. Chain ini menangani semua lalu lintas yang bergerak melalui router tetapi tidak ditujukan untuk router itu sendiri.</p>
+    
+    <p>Dari sumber NetworkTik (2024), sebagai contoh, jika Anda memiliki PC di LAN dan ingin mengakses google.com di browser Anda, maka lalu lintas berasal dari PC Anda, melewati router menuju server google.com di internet. Inilah yang disebut chain forward.</p>
+    
+    <div class="tech-alert">
+        <p>Forward chain mengontrol aliran data antar jaringan yang terhubung melalui router MikroTik. Ini sangat penting untuk mengatur lalu lintas dari jaringan lokal ke internet dan sebaliknya, serta antara berbagai segmen jaringan internal.</p>
+    </div>
+    
+    <h3 class="subsection-title">Membuat Aturan Forward Chain Dasar</h3>
+    
+    <p>Dari sumber MikroTik Documentation (2024), Forward chain akan memiliki lebih banyak aturan daripada input: menerima koneksi established, related dan untracked; FastTrack koneksi established dan related (saat ini hanya IPv4); dan berbagai aturan lainnya untuk melindungi serangan langsung pada klien.</p>
+    
+    <p>Berikut adalah aturan dasar untuk forward chain:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Mengaktifkan FastTrack untuk koneksi established dan related</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">fasttrack-connection</span> chain=<span class="string">forward</span> connection-state=<span class="string">established,related</span></div>
+        <div class="code-line comment"># Menerima koneksi established, related, dan untracked</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">forward</span> connection-state=<span class="string">established,related,untracked</span></div>
+        <div class="code-line comment"># Menolak koneksi invalid</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> connection-state=<span class="string">invalid</span></div>
+    </div>
+    
+    <p>Dari sumber MikroTik Advanced Firewall (2023), aturan penting lainnya termasuk menerima lalu lintas yang sesuai dengan kebijakan IPSec, melindungi dari paket yang tidak di-NAT, dan menolak alamat IP yang tidak boleh di-forward:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Menerima lalu lintas yang sesuai dengan kebijakan IPSec</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">forward</span> ipsec-policy=<span class="string">in,ipsec</span></div>
+        <div class="code-line comment"># Menolak lalu lintas dari WAN yang tidak melalui DSTNAT</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> connection-nat-state=<span class="string">!dstnat</span> connection-state=<span class="string">new</span> in-interface-list=<span class="string">WAN</span></div>
+    </div>
+    
+    <h3 class="subsection-title">Membuat Address Lists untuk Forward Chain</h3>
+    
+    <p>Dari sumber MikroTik Documentation (2024), sebelum membuat aturan yang sebenarnya, diperlukan untuk membuat address-list yang berisi semua alamat IPv4/6 yang tidak dapat di-forward. Perhatikan bahwa dalam daftar ini rentang alamat multicast ditambahkan.</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Membuat address list untuk alamat yang tidak boleh di-forward</div>
+        <div class="code-line"><span class="keyword">/ip firewall address-list add</span> address=<span class="string">0.0.0.0/8</span> comment=<span class="string">"RFC6890"</span> list=<span class="string">no_forward_ipv4</span></div>
+        <div class="code-line"><span class="keyword">/ip firewall address-list add</span> address=<span class="string">169.254.0.0/16</span> comment=<span class="string">"RFC6890"</span> list=<span class="string">no_forward_ipv4</span></div>
+        <div class="code-line"><span class="keyword">/ip firewall address-list add</span> address=<span class="string">224.0.0.0/4</span> comment=<span class="string">"multicast"</span> list=<span class="string">no_forward_ipv4</span></div>
+        <div class="code-line"><span class="keyword">/ip firewall address-list add</span> address=<span class="string">255.255.255.255/32</span> comment=<span class="string">"RFC6890"</span> list=<span class="string">no_forward_ipv4</span></div>
+        <div class="code-line comment"># Menolak forwarding untuk alamat dalam list</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> src-address-list=<span class="string">no_forward_ipv4</span></div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> dst-address-list=<span class="string">no_forward_ipv4</span></div>
+    </div>
+    
+    <h3 class="subsection-title">Contoh Konfigurasi Forward Chain Lengkap</h3>
+    
+    <p>Berikut adalah contoh konfigurasi forward chain yang lengkap:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># FastTrack untuk koneksi established dan related</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">fasttrack-connection</span> chain=<span class="string">forward</span> connection-state=<span class="string">established,related</span></div>
+        <div class="code-line comment"># Menerima koneksi established, related, dan untracked</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">forward</span> connection-state=<span class="string">established,related,untracked</span></div>
+        <div class="code-line comment"># Menolak koneksi invalid</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> connection-state=<span class="string">invalid</span> log=<span class="string">yes</span></div>
+        <div class="code-line comment"># Menerima lalu lintas IPSec</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">forward</span> ipsec-policy=<span class="string">in,ipsec</span></div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">forward</span> ipsec-policy=<span class="string">out,ipsec</span></div>
+        <div class="code-line comment"># Menolak lalu lintas dari WAN yang tidak melalui DSTNAT</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> connection-nat-state=<span class="string">!dstnat</span> connection-state=<span class="string">new</span> in-interface-list=<span class="string">WAN</span></div>
+        <div class="code-line comment"># Menolak lalu lintas dari/ke alamat yang tidak boleh di-forward</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> src-address-list=<span class="string">no_forward_ipv4</span></div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> dst-address-list=<span class="string">no_forward_ipv4</span></div>
+    </div>
+    
+    <p>Dari sumber VRealmatic (2023), aturan FastTrack (chain=forward action=fasttrack-connection) memungkinkan pemrosesan lalu lintas reguler yang lebih cepat dengan melewati beberapa pemeriksaan lebih lanjut. Ini harus ditempatkan relatif tinggi dalam daftar aturan tetapi setelah aturan yang menolak lalu lintas invalid dan berpotensi berbahaya.</p>
+    
+    <div class="security-alert">
+        <p>Pastikan untuk selalu menerapkan prinsip "deny by default" pada forward chain, artinya hanya mengizinkan lalu lintas yang secara eksplisit diizinkan dan menolak semua lalu lintas lainnya. Ini akan memberikan tingkat keamanan yang lebih tinggi untuk jaringan Anda.</p>
+    </div>
+    
+    <h3 class="subsection-title">Verifikasi Aturan Forward Chain</h3>
+    
+    <p>Untuk memeriksa aturan forward chain yang telah dikonfigurasi:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter print</span> where chain=<span class="string">forward</span></div>
+        <div class="code-line comment"># Menampilkan semua aturan di forward chain</div>
+    </div>
+    
+    <p>Untuk melihat statistik aturan:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter print stats</span> where chain=<span class="string">forward</span></div>
+        <div class="code-line comment"># Menampilkan statistik aturan di forward chain</div>
+        <div class="code-line">Flags: X - disabled, I - invalid, D - dynamic</div>
+        <div class="code-line"> #   CHAIN    ACTION                 BYTES              PACKETS</div>
+        <div class="code-line"> 0 D forward  passthrough            50507925242        50048246</div>
+        <div class="code-line"> 1   forward  fasttrack-connection   28505528775        31504682</div>
+        <div class="code-line"> 2   forward  accept                 28505528775        31504682</div>
+        <div class="code-line"> 3   forward  drop                   432270             9719</div>
+    </div>
+    
+    <div class="conclusion-box">
+        <p>Dari 2 pendapat tersebut dapat disimpulkan bahwa forward chain adalah komponen penting dalam keamanan jaringan karena mengontrol lalu lintas yang melewati router MikroTik antara berbagai jaringan. Konfigurasi forward chain yang efektif mencakup penggunaan FastTrack untuk meningkatkan kinerja, menerima koneksi yang sudah established dan related, menolak koneksi invalid, dan menerapkan pembatasan untuk alamat IP yang tidak boleh di-forward. Forward chain juga penting untuk melindungi jaringan lokal dari ancaman eksternal dengan menolak lalu lintas dari WAN yang tidak melalui DSTNAT.</p>
+    </div>
+</div>
+
+<!-- Output Chain Rules Section -->
+<div class="section fade-in">
+    <h2 class="section-title">3. OUTPUT CHAIN RULES</h2>
+
+
+                                                    <div class="image-container">
+          <img src="topologi.png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+
+                                                    <div class="image-container">
+          <img src="no (3).png" alt="SERVICE IP pada MikroTik RouterOS">
+          <div class="image-caption">Tampilan topologi di gns3</div>
+        </div>
+    
+    <h3 class="subsection-title">Pengertian dan Fungsi Output Chain</h3>
+    
+    <p>Dari sumber MikroTik Wiki (2024), output chain digunakan untuk memproses paket yang berasal dari router dan meninggalkannya melalui salah satu interface.</p>
+    
+    <p>Dari sumber NetworkTik (2024), Chain Output berkaitan dengan lalu lintas yang berasal dari router MikroTik dan menuju ke tempat lain. Misalnya, jika Anda melakukan ping dari router MikroTik itu sendiri ke google.com, itu termasuk dalam chain output.</p>
+    
+    <div class="tech-alert">
+        <p>Output chain umumnya kurang diperketat dibandingkan dengan input dan forward chain, karena lalu lintas yang dihasilkan oleh router sendiri biasanya sudah terpercaya. Namun, mengonfigurasi output chain dengan tepat tetap penting untuk mencegah komunikasi yang tidak diinginkan jika router terinfeksi malware.</p>
+    </div>
+    
+    <h3 class="subsection-title">Membuat Aturan Output Chain Dasar</h3>
+    
+    <p>Dari sumber Forum MikroTik (2013), biasanya hanya ada satu aturan output yang mengizinkan semua lalu lintas, sehingga sebenarnya tidak melakukan apa-apa karena semua lalu lintas diizinkan secara default.</p>
+    
+    <p>Namun, untuk keamanan yang lebih baik, berikut adalah beberapa aturan output chain dasar:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Menerima semua koneksi established dan related</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">output</span> connection-state=<span class="string">established,related</span></div>
+        <div class="code-line comment"># Menolak koneksi invalid</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">output</span> connection-state=<span class="string">invalid</span></div>
+    </div>
+    
+    <p>Dari sumber VRealmatic (2023), output chain mengontrol lalu lintas yang dihasilkan oleh router dan menuju keluar darinya. Ini mencakup paket yang dikirim dari router ke perangkat atau jaringan lain. Chain ini dapat digunakan untuk memantau atau membatasi lalu lintas keluar dari router, seperti peringatan sistem, kueri DNS, atau upaya pembaruan firmware.</p>
+    
+    <h3 class="subsection-title">Contoh Konfigurasi Output Chain Khusus</h3>
+    
+    <p>Berikut adalah contoh konfigurasi output chain yang lebih spesifik:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Menerima semua koneksi established dan related</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">output</span> connection-state=<span class="string">established,related</span></div>
+        <div class="code-line comment"># Menolak koneksi invalid</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">output</span> connection-state=<span class="string">invalid</span></div>
+        <div class="code-line comment"># Mengizinkan DNS query</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">output</span> protocol=<span class="string">udp</span> dst-port=<span class="string">53</span></div>
+        <div class="code-line comment"># Mengizinkan NTP update</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">output</span> protocol=<span class="string">udp</span> dst-port=<span class="string">123</span></div>
+        <div class="code-line comment"># Mengizinkan ICMP</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">output</span> protocol=<span class="string">icmp</span></div>
+        <div class="code-line comment"># Mengizinkan akses ke server pembaruan MikroTik</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">output</span> dst-address=<span class="string">159.148.172.0/24</span></div>
+        <div class="code-line comment"># Menolak semua lalu lintas lainnya</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">output</span></div>
+    </div>
+    
+    <div class="security-alert">
+        <p>Berhati-hatilah saat mengonfigurasi aturan output chain yang sangat ketat, karena dapat mengganggu fungsi penting router seperti pembaruan waktu, resolusi DNS, atau akses ke server pembaruan. Selalu pastikan Anda mengizinkan lalu lintas yang diperlukan untuk operasi normal router.</p>
+    </div>
+    
+    <h3 class="subsection-title">Verifikasi Aturan Output Chain</h3>
+    
+    <p>Untuk memeriksa aturan output chain yang telah dikonfigurasi:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter print</span> where chain=<span class="string">output</span></div>
+        <div class="code-line comment"># Menampilkan semua aturan di output chain</div>
+    </div>
+    
+    <p>Untuk melihat statistik aturan:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line"><span class="keyword">/ip firewall filter print stats</span> where chain=<span class="string">output</span></div>
+        <div class="code-line comment"># Menampilkan statistik aturan di output chain</div>
+        <div class="code-line">Flags: X - disabled, I - invalid, D - dynamic</div>
+        <div class="code-line"> #   CHAIN   ACTION     BYTES           PACKETS</div>
+        <div class="code-line"> 0   output  accept     134562          2134</div>
+        <div class="code-line"> 1   output  drop       0               0</div>
+        <div class="code-line"> 2   output  accept     8742            158</div>
+    </div>
+    
+    <div class="conclusion-box">
+        <p>Dari 2 pendapat tersebut dapat disimpulkan bahwa output chain adalah bagian dari firewall MikroTik yang menangani lalu lintas yang dihasilkan oleh router itu sendiri. Meskipun sering kali kurang dibatasi dibandingkan input dan forward chain, mengonfigurasi output chain dengan tepat dapat memberikan lapisan keamanan tambahan dengan membatasi jenis lalu lintas yang dapat diinisiasi oleh router. Konfigurasi yang umum mencakup mengizinkan koneksi established dan related, DNS query, NTP update, dan mengizinkan akses ke server pembaruan MikroTik sambil menolak lalu lintas lainnya.</p>
+    </div>
+</div>
+
+<!-- Best Practices Section -->
+<div class="section fade-in">
+    <h2 class="section-title">4. PRAKTIK TERBAIK KONFIGURASI FIREWALL</h2>
+    
+    <h3 class="subsection-title">Urutan Aturan Firewall</h3>
+    
+    <p>Dari sumber Forum MikroTik (2020), urutan aturan sangat penting, karena memengaruhi jumlah pemrosesan yang diperlukan untuk setiap paket. Aturan yang paling sering digunakan harus diletakkan sebelum aturan yang jarang digunakan.</p>
+    
+    <p>Dari sumber ShellHacks (2023), ketika memproses sebuah chain, aturan diambil dari chain dalam urutan yang tercantum di sana dari atas ke bawah. Jika sebuah paket cocok dengan kriteria aturan, maka tindakan yang ditentukan akan dilakukan padanya, dan tidak ada lagi aturan yang diproses dalam chain tersebut (pengecualian adalah tindakan PASSTHROUGH).</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Urutan yang direkomendasikan untuk Input Chain</div>
+        <div class="code-line">1. Menerima koneksi established,related,untracked</div>
+        <div class="code-line">2. Menolak koneksi invalid</div>
+        <div class="code-line">3. Menerima ICMP (dengan pembatasan)</div>
+        <div class="code-line">4. Menerima akses dari jaringan lokal</div>
+        <div class="code-line">5. Menerima layanan tertentu (SSH, Winbox, dll)</div>
+        <div class="code-line">6. Menolak semua lalu lintas lainnya</div>
+        <div class="code-line comment"># Urutan yang direkomendasikan untuk Forward Chain</div>
+        <div class="code-line">1. FastTrack untuk koneksi established,related</div>
+        <div class="code-line">2. Menerima koneksi established,related,untracked</div>
+        <div class="code-line">3. Menolak koneksi invalid</div>
+        <div class="code-line">4. Menerima lalu lintas IPSec</div>
+        <div class="code-line">5. Menerima lalu lintas yang diizinkan (berdasarkan port, protokol, dll)</div>
+        <div class="code-line">6. Menolak lalu lintas yang tidak diinginkan</div>
+    </div>
+    
+    <h3 class="subsection-title">Penggunaan Connection Tracking</h3>
+    
+    <p>Dari sumber MikroTik Documentation (2024), firewall MikroTik mengimplementasikan packet filtering stateful (dengan memanfaatkan connection tracking) dan stateless untuk menyediakan fungsi keamanan yang digunakan untuk mengelola aliran data ke, dari, dan melalui router.</p>
+    
+    <p>Contoh penggunaan connection tracking:</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Mengizinkan koneksi established dan related</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> connection-state=<span class="string">established,related</span></div>
+        <div class="code-line comment"># Menolak koneksi invalid</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">input</span> connection-state=<span class="string">invalid</span></div>
+        <div class="code-line comment"># Mengizinkan koneksi baru hanya untuk protokol tertentu</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> connection-state=<span class="string">new</span> protocol=<span class="string">tcp</span> dst-port=<span class="string">22,8291</span></div>
+    </div>
+    
+    <h3 class="subsection-title">Penggunaan Address Lists</h3>
+    
+    <p>Dari sumber Basic Universal Firewall Script (2023), pertama kita perlu membuat ADDRESS LIST dengan semua IP yang akan kita gunakan sebagian besar waktu.</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Membuat address list untuk jaringan yang diizinkan mengakses router</div>
+        <div class="code-line"><span class="keyword">/ip firewall address-list add</span> address=<span class="string">192.168.88.0/24</span> list=<span class="string">allowed_to_router</span></div>
+        <div class="code-line comment"># Membuat address list untuk alamat yang tidak boleh di-forward</div>
+        <div class="code-line"><span class="keyword">/ip firewall address-list add</span> address=<span class="string">0.0.0.0/8</span> list=<span class="string">no_forward_ipv4</span></div>
+        <div class="code-line comment"># Menggunakan address list dalam aturan firewall</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">accept</span> chain=<span class="string">input</span> src-address-list=<span class="string">allowed_to_router</span></div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">forward</span> src-address-list=<span class="string">no_forward_ipv4</span></div>
+    </div>
+    
+    <h3 class="subsection-title">Monitoring dan Troubleshooting</h3>
+    
+    <p>Dari sumber MikroTik Documentation (2024), untuk melihat statistik pencocokan berdasarkan aturan firewall, jalankan perintah /ip firewall filter print stats atau /ipv6 firewall filter print stats untuk firewall IPv6.</p>
+    
+    <div class="code-terminal">
+        <div class="code-line comment"># Melihat statistik aturan firewall</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter print stats</span></div>
+        <div class="code-line comment"># Melihat log firewall</div>
+        <div class="code-line"><span class="keyword">/log print</span> where topics~<span class="string">"firewall"</span></div>
+        <div class="code-line comment"># Mengaktifkan log untuk aturan tertentu</div>
+        <div class="code-line"><span class="keyword">/ip firewall filter add</span> action=<span class="string">drop</span> chain=<span class="string">input</span> connection-state=<span class="string">invalid</span> log=<span class="string">yes</span> log-prefix=<span class="string">"invalid-input"</span></div>
+    </div>
+    
+    <div class="security-alert">
+        <p>Selalu lakukan backup konfigurasi sebelum melakukan perubahan besar pada firewall. Jika sesuatu tidak berjalan sesuai rencana, Anda dapat dengan cepat mengembalikan konfigurasi yang berfungsi. Juga, pertimbangkan untuk menggunakan fitur timeout saat menerapkan aturan baru untuk menghindari terkunci keluar dari router.</p>
+    </div>
+    
+    <div class="conclusion-box">
+        <p>Dari 2 pendapat tersebut dapat disimpulkan bahwa praktik terbaik dalam konfigurasi firewall MikroTik meliputi penempatan aturan yang tepat dengan aturan yang paling sering digunakan ditempatkan di atas, penggunaan connection tracking untuk membedakan berbagai jenis koneksi, penggunaan address lists untuk manajemen alamat IP yang lebih efisien, dan monitoring rutin untuk memastikan firewall berfungsi sebagaimana mestinya. Mengikuti praktik-praktik ini akan membantu memastikan bahwa firewall MikroTik Anda tidak hanya aman tetapi juga efisien dalam memproses lalu lintas jaringan.</p>
+    </div>
+</div>
+
+<!-- Bibliography -->
+<div class="bibliography">
+    <h3>DAFTAR PUSTAKA</h3>
+    <ul>
+        <li><strong>MikroTik Documentation.</strong> 2024. <em>Firewall - RouterOS</em>. <a href="https://help.mikrotik.com/docs/spaces/ROS/pages/250708066/Firewall" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/250708066/Firewall</a>. Diakses pada 11 September 2025, pukul 07:15 WIB.</li>
+        
+        <li><strong>MikroTik Wiki.</strong> 2024. <em>Manual:IP/Firewall/Filter</em>. <a href="https://wiki.mikrotik.com/Manual:IP/Firewall/Filter" target="_blank">https://wiki.mikrotik.com/Manual:IP/Firewall/Filter</a>. Diakses pada 11 September 2025, pukul 07:45 WIB.</li>
+        
+        <li><strong>MikroTik Documentation.</strong> 2024. <em>Building Advanced Firewall</em>. <a href="https://help.mikrotik.com/docs/spaces/ROS/pages/328513/Building+Advanced+Firewall" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/328513/Building+Advanced+Firewall</a>. Diakses pada 11 September 2025, pukul 08:20 WIB.</li>
+        
+        <li><strong>VRealmatic.</strong> 2023. <em>Filter Rules Firewall configuration on MikroTik router</em>. <a href="https://vrealmatic.com/mikrotik-router/firewall/filter-rules" target="_blank">https://vrealmatic.com/mikrotik-router/firewall/filter-rules</a>. Diakses pada 11 September 2025, pukul 08:55 WIB.</li>
+        
+        <li><strong>Forum MikroTik.</strong> 2023. <em>Input/Output rules</em>. <a href="https://forum.mikrotik.com/viewtopic.php?t=74636" target="_blank">https://forum.mikrotik.com/viewtopic.php?t=74636</a>. Diakses pada 11 September 2025, pukul 09:30 WIB.</li>
+        
+        <li><strong>NetworkTik.</strong> 2024. <em>Secure Your Network with MikroTik Firewall Rules</em>. <a href="https://networktik.com/mikrotik-firewall/" target="_blank">https://networktik.com/mikrotik-firewall/</a>. Diakses pada 11 September 2025, pukul 10:05 WIB.</li>
+        
+        <li><strong>MikroTik Documentation.</strong> 2024. <em>Common Firewall Matchers and Actions</em>. <a href="https://help.mikrotik.com/docs/spaces/ROS/pages/250708064/Common+Firewall+Matchers+and+Actions" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/250708064/Common+Firewall+Matchers+and+Actions</a>. Diakses pada 11 September 2025, pukul 10:40 WIB.</li>
+        
+        <li><strong>ShellHacks.</strong> 2023. <em>MikroTik: Firewall - Default Config & Basics For Dummies</em>. <a href="https://www.shellhacks.com/mikrotik-firewall-default-config-basics-for-dummies/" target="_blank">https://www.shellhacks.com/mikrotik-firewall-default-config-basics-for-dummies/</a>. Diakses pada 11 September 2025, pukul 11:15 WIB.</li>
+        
+        <li><strong>Forum MikroTik.</strong> 2020. <em>Mikrotik Firewall Basics</em>. <a href="https://forum.mikrotik.com/viewtopic.php?t=114697" target="_blank">https://forum.mikrotik.com/viewtopic.php?t=114697</a>. Diakses pada 11 September 2025, pukul 11:50 WIB.</li>
+        
+        <li><strong>MikroTik Wiki.</strong> 2023. <em>Basic universal firewall script</em>. <a href="https://wiki.mikrotik.com/Basic_universal_firewall_script" target="_blank">https://wiki.mikrotik.com/Basic_universal_firewall_script</a>. Diakses pada 11 September 2025, pukul 12:25 WIB.</li>
+    </ul>
+</div>
+
+<script>
+    // Tech particles animation
+    function createTechParticles() {
+        const particlesContainer = document.getElementById('techParticles');
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Scroll progress
+    function updateScrollProgress() {
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / scrollHeight) * 100;
+        document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+    }
+
+    // Typing effect for code lines
+    function typeText(element, text, speed = 30) {
+        return new Promise(resolve => {
+            element.classList.add('typing');
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent = text.slice(0, i + 1);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    element.classList.remove('typing');
+                    element.classList.add('typed');
+                    resolve();
+                }
+            }
+            type();
+        });
+    }
+    
+    async function animateCodeBlock(terminal) {
+        const codeLines = terminal.querySelectorAll('.code-line:not(.typed)');
+        for (const line of codeLines) {
+            const originalHTML = line.innerHTML;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = originalHTML;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            
+            // Clear the line content, but keep child spans for styling
+            const children = Array.from(line.childNodes).map(child => child.cloneNode(true));
+            line.innerHTML = '';
+            
+            await typeText(line, textContent, 20);
+            
+            // Restore original HTML with spans
+            line.innerHTML = originalHTML;
+            line.classList.add('typed');
+        }
+    }
+
+    // Animate code blocks with typing effect
+    function setupCodeBlockObserver() {
+        const codeTerminals = document.querySelectorAll('.code-terminal');
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const terminal = entry.target;
+                    // For already typed lines, just show them
+                    terminal.querySelectorAll('.code-line.typed').forEach(line => line.style.opacity = '1');
+                    
+                    animateCodeBlock(terminal);
+                    obs.unobserve(terminal); // Animate only once
+                }
+            });
+        }, { threshold: 0.3 });
+
+        codeTerminals.forEach(terminal => {
+            observer.observe(terminal);
+        });
+    }
+
+    // Fade in animation on scroll
+    function animateOnScroll() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+    }
+
+    // Section hover effects
+    function addSectionEffects() {
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+            section.addEventListener('mouseenter', () => {
+                section.style.transform = 'translateY(-8px)';
+            });
+            section.addEventListener('mouseleave', () => {
+                section.style.transform = 'translateY(0)';
+            });
+        });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+        createTechParticles();
+        animateOnScroll();
+        setupCodeBlockObserver();
+        addSectionEffects();
+        
+        // Scroll events
+        window.addEventListener('scroll', updateScrollProgress);
+        
+        // Smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+    });
+
+    // Add responsive particle count
+    function adjustParticleCount() {
+        const width = window.innerWidth;
+        const particlesContainer = document.getElementById('techParticles');
+        const currentParticles = particlesContainer.children.length;
+        const targetParticles = width < 768 ? 20 : width < 1200 ? 35 : 50;
+        
+        if (currentParticles !== targetParticles) {
+            particlesContainer.innerHTML = '';
+            for (let i = 0; i < targetParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+    }
+
+    window.addEventListener('resize', adjustParticleCount);
+
+    // Anti-Copy JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mencegah seleksi teks
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Mencegah penyalinan teks (Ctrl+C)
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            // Opsional: Tampilkan pesan
+            alert('Maaf, penyalinan konten pada halaman ini tidak diizinkan!');
+            return false;
+        });
+
+        // Mencegah pemotongan teks (Ctrl+X)
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Mencegah penempelan teks (Ctrl+V)
+        document.addEventListener('paste', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Mencegah klik kanan
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Mencegah drag & drop
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>
